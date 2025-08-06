@@ -11,9 +11,14 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "@trimblemaps/trimblemaps-js": "^4.2.3",
+    "ag-grid-community": "^34.1.0",
+    "ag-grid-react": "^34.1.0",
+    "dotenv": "^17.2.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "zustand": "^5.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",

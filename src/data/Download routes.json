@@ -1,0 +1,67 @@
+[
+  {
+    "Route": "000_1",
+    "Status": "Locked",
+    "Route Type": "Trap",
+    "Ttl Stops": 2.0,
+    "Ttl Bills": 3,
+    "PSE": 4,
+    "Weight": 3318.0,
+    "LG": 0.0,
+    "APT": 0.0,
+    "Start Time": "14:56",
+    "Comments": null
+  },
+  {
+    "Route": "DPU",
+    "Status": "Unlocked",
+    "Route Type": "City",
+    "Ttl Stops": 1.0,
+    "Ttl Bills": 2,
+    "PSE": 2,
+    "Weight": 65.0,
+    "LG": 0.0,
+    "APT": 0.0,
+    "Start Time": "9:30",
+    "Comments": "CUSTMRROUTE"
+  },
+  {
+    "Route": "PST",
+    "Status": "Locked",
+    "Route Type": "City",
+    "Ttl Stops": 48.0,
+    "Ttl Bills": 61,
+    "PSE": 102,
+    "Weight": 70065.0,
+    "LG": 0.0,
+    "APT": 0.0,
+    "Start Time": "1:52",
+    "Comments": "EXTRATRLR"
+  },
+  {
+    "Route": "SCT",
+    "Status": "Unlocked",
+    "Route Type": "City",
+    "Ttl Stops": 1.0,
+    "Ttl Bills": 1,
+    "PSE": 1,
+    "Weight": 2090.0,
+    "LG": 0.0,
+    "APT": 0.0,
+    "Start Time": "9:30",
+    "Comments": "CUSTMRROUTE"
+  },
+  {
+    "Route": "STG",
+    "Status": "Unlocked",
+    "Route Type": "City",
+    "Ttl Stops": 2.0,
+    "Ttl Bills": 4,
+    "PSE": 7,
+    "Weight": 7161.0,
+    "LG": 0.0,
+    "APT": 0.0,
+    "Start Time": "9:30",
+    "Comments": "CUSTMRROUTE"
+  }
+]
