@@ -39,7 +39,7 @@ const StopsTable = () => {
   const onStopSelection = (e) => {
     const selected = e.api.getSelectedRows();
     updateSelectedStops(selected);
-    console.log("Selected stops:", selected);
+    // console.log("Selected stops:", selected);
   };
 
   return (

@@ -3,7 +3,7 @@ import { Map, Marker, Route, setAPIKey } from '@trimblemaps/trimblemaps-js';
 import useMyStore from '../store/route-store'; 
 
 
-const StopsLatLng = (stops) =>{
+const StopsLatLng = (stops:[]) =>{
   let stopsInRoute = stops.map(stop => [
         parseFloat(stop.Longitude.replace(/'/g, "")), // Remove quotes and convert to float
         stop.Latitude
@@ -35,7 +35,7 @@ const MapLayout = () => {
 
       stopsInRoute = StopsLatLng(stopsInRoute)
 
-      console.log("stopsInRoute",stopsInRoute);
+      // console.log("stopsInRoute",stopsInRoute);
       let myRoute = new Route({
         routeId:"myRoute"+i,    
         stops:stopsInRoute,
@@ -44,27 +44,24 @@ const MapLayout = () => {
         showArrows:false,   
       })
       myRoutes.push(myRoute);
-      console.log("color is :",routeColor[(i-1)%5]);
+      // console.log("color is :",routeColor[(i-1)%5]);
       
     }
-    console.log("myRoutes are: ",myRoutes);
+    // console.log("myRoutes are: ",myRoutes);
 
+    // marker for selected routes on routeTable
     StopsLatLng(selectedStops).forEach(stop => {
       let marker = new Marker({
         color: "black",
       }).setLngLat(stop).addTo(myMap);
     })
-    // let marker = new Marker({
-    //     color: "yellow",
-    // }).setLngLat([-74.006,40.7128]).addTo(myMap)
-    
-    
+
     myMap.on("load",function(){
         // myRoute.addStopIcon('end', 'https://cdn-icons-png.flaticon.com/512/684/684908.png');
         for(let i=0;i<myRoutes.length;i++){
           if(stopsInRoute.length>1)
           {
-            console.log("inside the if condition");
+            // console.log("inside the if condition");
             myRoutes[i].addTo(myMap);
 
           }
@@ -82,7 +79,7 @@ const MapLayout = () => {
       id="map"
       className="trimblemaps-dark"
       ref={mapRef}
-      style={{ width: '100%', height: '1860px' }} // 👈 MUST have dimensions
+      style={{ width: '100%', height: '100%' }} // 👈 MUST have dimensions
     />
   );
 };
