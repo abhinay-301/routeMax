@@ -2,8 +2,9 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import routsData from "../data/Download routes.json";
 import stopsData from "../data/Download stops.json";
+import type { MyStore } from "./types";
 
-const useMyStore = create(
+const useMyStore = create<MyStore>()(
   persist(
     (set, get) => ({
       // We'll load persisted routes if available, otherwise fallback to JSON
@@ -28,18 +29,14 @@ const useMyStore = create(
       updateRoutesStatus: (routeName: string, newStatus: string) => {
         set((state) => ({
           routes: state.routes.map((route) =>
-            route.Route === routeName
-              ? { ...route, Status: newStatus }
-              : route
+            route.Route === routeName ? { ...route, Status: newStatus } : route
           ),
         }));
       },
       updateRouteName: (routeName: string, newName: string) => {
         set((state) => ({
           routes: state.routes.map((route) =>
-            route.Route === routeName
-              ? { ...route, Route: newName }
-              : route
+            route.Route === routeName ? { ...route, Route: newName } : route
           ),
         }));
       },
@@ -48,11 +45,27 @@ const useMyStore = create(
           routes: state.routes.map((route) =>
             route.Route === routeName
               ? {
-                 ...route,
-                 ["Route Type"]: newType }
+                  ...route,
+                  ["Route Type"]: newType,
+                }
               : route
           ),
         }));
+      },
+      updateRouteInStops: (oldRoute: string, newRoute: string) => {
+        set((state) => ({
+          stops: state.stops.map((stop) =>
+            stop.Route === oldRoute
+              ? {
+                  ...stop,
+                  Route: newRoute,
+                }
+              : stop
+          ),
+        }));
+      },
+      resetRoutes: () => {
+        set({ routes: routsData });
       },
     }),
     {

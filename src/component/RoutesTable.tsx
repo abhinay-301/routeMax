@@ -7,10 +7,11 @@ import useMyStore from "../store/route-store";
 import StatusRadioEditor from "./StatusRadioEditor";
 import RouteTypeEditor from "./RouteTypeEditor.tsx";
 
+
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const RouteTable = () => {
-  const { routes, updateSelectedRoutes } = useMyStore();
+  const { routes, updateSelectedRoutes, updateRouteName,updateRouteInStops } = useMyStore();
   const [routeData, setRouteData] = useState([]);
   const [routeColumn, setRouteColumn] = useState([]);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -38,8 +39,8 @@ const RouteTable = () => {
             cellEditor: StatusRadioEditor,
           };
         }
-        if(key == "Route Type"){
-          return{
+        if (key == "Route Type") {
+          return {
             headerName: "Route Type",
             field: "Route Type",
             editable: true,
@@ -64,6 +65,20 @@ const RouteTable = () => {
     updateSelectedRoutes(selected);
   };
 
+  const onCellValueChanged = (event) => {
+    const { colDef, oldValue, newValue, data } = event;
+
+    if (colDef.field === "Route" && oldValue !== newValue) {
+      updateRouteName(oldValue, newValue);
+      updateRouteInStops(oldValue,newValue)
+    }
+
+    const updatedRow = { ...data };
+    setRouteData((prev) =>
+      prev.map((row) => (row === data ? updatedRow : row))
+    );
+  };
+
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <p style={{ flex: 0 }}>
@@ -85,6 +100,7 @@ const RouteTable = () => {
           rowSelection="multiple"
           onSelectionChanged={onRouteSelection}
           stopEditingWhenCellsLoseFocus={true}
+          onCellValueChanged={onCellValueChanged}
         />
       </div>
     </div>
