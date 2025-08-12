@@ -1,4 +1,3 @@
-// src/components/RouteTable.jsx
 import { useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
@@ -6,6 +5,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import { ModuleRegistry, AllCommunityModule, themeQuartz } from "ag-grid-community";
 import useMyStore from "../store/route-store";
 import StatusRadioEditor from "./StatusRadioEditor";
+import RouteTypeEditor from "./RouteTypeEditor.tsx";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -13,29 +13,7 @@ const RouteTable = () => {
   const { routes, updateSelectedRoutes } = useMyStore();
   const [routeData, setRouteData] = useState([]);
   const [routeColumn, setRouteColumn] = useState([]);
-
-  function setDarkMode(enabled) {
-    document.body.dataset.agThemeMode = enabled ? "dark-red" : "light-red";
-  }
-  setDarkMode(false);
-
-  const theme = themeQuartz
-    .withParams(
-      {
-        backgroundColor: "#FFE8E0",
-        foregroundColor: "#361008CC",
-        browserColorScheme: "light",
-      },
-      "light-red"
-    )
-    .withParams(
-      {
-        backgroundColor: "#201008",
-        foregroundColor: "#FFFFFFCC",
-        browserColorScheme: "dark",
-      },
-      "dark-red"
-    );
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     setRouteData(routes);
@@ -44,21 +22,29 @@ const RouteTable = () => {
       const keys = Object.keys(routes[0]);
 
       const cols = keys.map((key) => {
-        if (key === "routeName") {
+        if (key === "Route") {
           return {
             headerName: "Route Name",
-            field: "routeName",
+            field: "Route",
             editable: true,
           };
         }
 
-        if (key === "status") {
+        if (key === "Status") {
           return {
             headerName: "Status",
-            field: "status",
+            field: "Status",
             editable: true,
             cellEditor: StatusRadioEditor,
           };
+        }
+        if(key == "Route Type"){
+          return{
+            headerName: "Route Type",
+            field: "Route Type",
+            editable: true,
+            cellEditor: RouteTypeEditor,
+          }
         }
 
         return { field: key };
@@ -85,13 +71,15 @@ const RouteTable = () => {
           Dark mode:{" "}
           <input
             type="checkbox"
-            onChange={(e) => setDarkMode(e.target.checked)}
+            onChange={(e) => setIsDarkMode(e.target.checked)}
           />
         </label>
       </p>
-      <div style={{ flex: 1 }}>
+      <div
+        style={{ flex: 1 }}
+        className={isDarkMode ? "ag-theme-quartz-dark" : "ag-theme-quartz"}
+      >
         <AgGridReact
-          theme={theme}
           columnDefs={routeColumn}
           rowData={routeData}
           rowSelection="multiple"
