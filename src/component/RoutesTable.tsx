@@ -11,10 +11,9 @@ import RouteTypeEditor from "./RouteTypeEditor.tsx";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const RouteTable = () => {
-  const { routes, updateSelectedRoutes, updateRouteName,updateRouteInStops } = useMyStore();
+  const { routes, updateSelectedRoutes, updateRouteName, updateRouteInStops } = useMyStore();
   const [routeData, setRouteData] = useState([]);
   const [routeColumn, setRouteColumn] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     setRouteData(routes);
@@ -70,7 +69,7 @@ const RouteTable = () => {
 
     if (colDef.field === "Route" && oldValue !== newValue) {
       updateRouteName(oldValue, newValue);
-      updateRouteInStops(oldValue,newValue)
+      updateRouteInStops(oldValue, newValue)
     }
 
     const updatedRow = { ...data };
@@ -80,29 +79,18 @@ const RouteTable = () => {
   };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      <p style={{ flex: 0 }}>
-        <label>
-          Dark mode:{" "}
-          <input
-            type="checkbox"
-            onChange={(e) => setIsDarkMode(e.target.checked)}
-          />
-        </label>
-      </p>
-      <div
-        style={{ flex: 1 }}
-        className={isDarkMode ? "ag-theme-quartz-dark" : "ag-theme-quartz"}
-      >
-        <AgGridReact
-          columnDefs={routeColumn}
-          rowData={routeData}
-          rowSelection="multiple"
-          onSelectionChanged={onRouteSelection}
-          stopEditingWhenCellsLoseFocus={true}
-          onCellValueChanged={onCellValueChanged}
-        />
-      </div>
+    <div className="ag-theme-alpine h-[300px]">
+      <h3 className="text-lg font-semibold mb-2">
+        Stops for Routes
+      </h3>
+      <AgGridReact
+        columnDefs={routeColumn}
+        rowData={routeData}
+        rowSelection="multiple"
+        onSelectionChanged={onRouteSelection}
+        stopEditingWhenCellsLoseFocus={true}
+        onCellValueChanged={onCellValueChanged}
+      />
     </div>
   );
 };
