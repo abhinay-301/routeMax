@@ -9,7 +9,7 @@ import useMyStore from "../store/route-store";
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const StopsTable = () => {
-  const { stops, selectedRouts, updateSelectedStops } = useMyStore();
+  const { stops, selectedRouts, themeValue, updateSelectedStops } = useMyStore();
 
   const [filteredStops, setFilteredStops] = useState([]);
   const [selectedRouteName, setSelectedRouteName] = useState("");
@@ -43,17 +43,20 @@ const StopsTable = () => {
   };
 
   return (
-    <div className="ag-theme-alpine h-[300px]">
+    <section>
       <h3 className="text-lg font-semibold mb-2">
         Stops for Routes: {selectedRouteName || "None selected"}
       </h3>
+     <div className={`ag-theme-alpine-${themeValue} h-[300px]`}>
       <AgGridReact
+        theme="legacy"
         rowData={filteredStops}
         columnDefs={stopColumn}
         rowSelection="multiple"
         onSelectionChanged={onStopSelection}
       />
     </div>
+    </section>
   );
 };
 

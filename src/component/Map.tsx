@@ -17,7 +17,7 @@ const MapLayout = () => {
 
   // console.log("selectedStops in store are: ",selectedStops);
 
-
+  const mapInstance = useRef(null);
   useEffect(() => {
     setAPIKey(import.meta.env.VITE_API_URL);
     const myMap = new Map({
@@ -25,7 +25,7 @@ const MapLayout = () => {
       center: [-79.76622386770032, 33.883808061358835],
       zoom: 10,
     });
-
+    mapInstance.current = myMap;
     const routeColor = ["red","green","yellow","blue","orange"] 
     const myRoutes = [];
     let stopsInRoute=[];
@@ -44,10 +44,8 @@ const MapLayout = () => {
         showArrows:false,   
       })
       myRoutes.push(myRoute);
-      // console.log("color is :",routeColor[(i-1)%5]);
-      
+
     }
-    // console.log("myRoutes are: ",myRoutes);
 
     // marker for selected routes on routeTable
     StopsLatLng(selectedStops).forEach(stop => {
@@ -57,18 +55,17 @@ const MapLayout = () => {
     })
 
     myMap.on("load",function(){
+      myMap.setDarkMode(true);
         // myRoute.addStopIcon('end', 'https://cdn-icons-png.flaticon.com/512/684/684908.png');
         for(let i=0;i<myRoutes.length;i++){
           if(stopsInRoute.length>1)
           {
-            // console.log("inside the if condition");
             myRoutes[i].addTo(myMap);
 
           }
         }
     })
-    
-    // Clean up on unmount
+    mapInstance.current?.setDarkMode(true);
     return () => {
       myMap.remove();
     };
@@ -77,9 +74,9 @@ const MapLayout = () => {
   return (
     <div
       id="map"
-      className="trimblemaps-dark"
       ref={mapRef}
       style={{ width: '100%', height: '100%' }} // 👈 MUST have dimensions
+      
     />
   );
 };

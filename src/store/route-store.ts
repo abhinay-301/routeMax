@@ -12,7 +12,7 @@ const useMyStore = create<MyStore>()(
       stops: stopsData,
       selectedRouts: [],
       selectedStops: [],
-      theme: "light",
+      themeValue: "light",
 
       updateSelectedRoutes: (newRoute: []) => {
         set({ selectedRouts: newRoute });
@@ -63,6 +63,9 @@ const useMyStore = create<MyStore>()(
               : stop
           ),
         }));
+      },
+      updateTheme: (newTheme:"light"|"dark")=>{
+        set({ themeValue: newTheme });
       },
       resetRoutes: () => {
         set({ routes: routsData });

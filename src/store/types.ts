@@ -39,7 +39,7 @@ export interface MyStore {
   stops: Stop[];
   selectedRouts: Route[];
   selectedStops: Stop[];
-  theme: "light" | "dark";
+  themeValue: "light" | "dark";
 
   updateSelectedRoutes: (newRoute: Route[]) => void;
   updateSelectedStops: (newStops: Stop[]) => void;

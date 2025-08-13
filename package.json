@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@salt-ds/ag-grid-theme": "^2.4.4",
+    "@salt-ds/core": "^1.47.4",
     "@tailwindcss/vite": "^4.1.11",
     "@trimblemaps/trimblemaps-js": "^4.2.3",
     "ag-grid-community": "^34.1.0",
