@@ -78,7 +78,7 @@ const useMyStore = create<MyStore>()(
         routes: state.routes,
         // selectedRouts: state.selectedRouts,
         // selectedStops: state.selectedStops,
-        theme: state.theme,
+        themeValue: state.themeValue,
       }),
     }
   )

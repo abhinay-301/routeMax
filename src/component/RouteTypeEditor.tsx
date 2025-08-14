@@ -5,7 +5,7 @@ import useMyStore from "../store/route-store";
 const RouteTypeEditor = forwardRef((props: any, ref) => {
   const valueRef = useRef(props.value);
   const updateRouteType = useMyStore.getState().updateRouteType;
-
+  const {themeValue} = useMyStore(); 
   const options = [
     { value: "City", label: "City" },
     { value: "Trap", label: "Trap" },
@@ -27,15 +27,15 @@ const RouteTypeEditor = forwardRef((props: any, ref) => {
   };
 
   return (
-    <div style={{ padding: "4px" }}>
+    <div className={`${themeValue==="dark"?"bg-black":"bg-amber-50"}`} style={{ padding: "4px" }}>
       <Select
         options={options}
         defaultValue={options.find((opt) => opt.value === props.value)}
         onChange={handleChange}
         menuPortalTarget={document.body} // fixes menu overflow in grid
         styles={{
-          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-          container: (base) => ({ ...base, minWidth: 120 }),
+          menuPortal: (base) => ({ ...base, zIndex: 9999,backgroundColor:"#000" }),
+          container: (base) => ({ ...base, minWidth: 120,backgroundColor:"black" }),
         }}
       />
     </div>

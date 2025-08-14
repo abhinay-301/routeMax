@@ -8,6 +8,7 @@ import {
   GeolocateControl,
   ScaleControl,
   FullscreenControl,
+  Common
 } from '@trimblemaps/trimblemaps-js';
 import useMyStore from '../store/route-store';
 
@@ -16,6 +17,8 @@ type Stop = {
   Longitude: string; // may include single-quotes per your data
   Route?: string;
 };
+
+
 
 const toLngLat = (stops: Stop[]) =>
   stops.map(s => [parseFloat(String(s.Longitude).replace(/'/g, '')), s.Latitude] as [number, number]);
@@ -38,11 +41,13 @@ const MapLayout = () => {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<any>(null);
 
-  const { routes, stops, selectedRouts, selectedStops,updateSelectedRoutes } = useMyStore();
+  Common.Style.ACCESSIBLE_LIGHT
+
+  const { routes, themeValue ,stops, selectedRouts, selectedStops,updateSelectedRoutes } = useMyStore();
 
   // ---- UI state (header) ----
   const [autoZoomDisabled, setAutoZoomDisabled] = useState<boolean>(false);
-  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const [isMeasuring, setIsMeasuring] = useState<boolean>(false);
   const measuringPointsRef = useRef<[number, number][]>([]);
   const measuringRouteRef = useRef<any | null>(null);
@@ -74,6 +79,9 @@ const MapLayout = () => {
       center: [-79.76622386770032, 33.883808061358835],
       zoom: 10,
     });
+
+  
+
     mapInstance.current = myMap;
 
     // ---- Map controls (right stack like screenshot) ----
@@ -98,8 +106,6 @@ const MapLayout = () => {
     const builtRoutes: any[] = [];
 
     myMap.on('load', () => {
-      myMap.setDarkMode(darkMode);
-
       // Draw selected routes
       routesStopsLngLat.forEach((stopsLL, idx) => {
         if (stopsLL.length > 1) {
@@ -117,7 +123,7 @@ const MapLayout = () => {
 
       // Markers for selected stops in table
       selectedStopsLngLat.forEach(ll => {
-        const m = new Marker({ color: 'black' }).setLngLat(ll).addTo(myMap);
+        const m = new Marker({ color: 'gray' }).setLngLat(ll).addTo(myMap);
         tempGraphicsRef.current.markers.push(m);
       });
 
@@ -182,6 +188,14 @@ const MapLayout = () => {
 
     myMap.on('click', onMapClick);
     window.addEventListener('keydown', onKeyDown);
+          // myMap.setDarkMode(darkMode);
+      if(themeValue ==="dark"){
+        myMap.setStyle(Common.Style.ACCESSIBLE_DARK);
+        myMap.setDarkMode(true);
+      }else{
+        myMap.setStyle(Common.Style.ACCESSIBLE_LIGHT);
+        myMap.setDarkMode(false);
+      }
 
     return () => {
       // Cleanup everything
@@ -196,13 +210,14 @@ const MapLayout = () => {
       myMap.remove();
     };
   // Intentionally include flags that change drawing/fit; controls don't need reruns
-  }, [routesStopsLngLat, selectedStopsLngLat, autoZoomDisabled, darkMode, isMeasuring]);
+  }, [routesStopsLngLat, selectedStopsLngLat, autoZoomDisabled, themeValue ,darkMode, isMeasuring]);
 
   // ---- Header actions ----
   const toggleBasemap = () => {
     setDarkMode(prev => {
       const next = !prev;
       mapInstance.current?.setDarkMode(next);
+      mapInstance.current.setStyle(Common.Style.ACCESSIBLE_DARK);
       return next;
     });
   };
@@ -265,7 +280,7 @@ const MapLayout = () => {
   };
 
   return (
-    <div ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+    <div className={`${themeValue==="dark"?"bg-gray-300":"bg-amber-50"}`} ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
       {/* Header Toolbar */}
       <div
         style={{
@@ -274,7 +289,7 @@ const MapLayout = () => {
           gap: 1,
           padding: '10px 12px',
           borderBottom: '1px solid #e6e6e6',
-          background: '#ffff',
+          // background: '#ffff',
         }}
       >
         <div style={{color:"green", fontWeight: 700, fontSize: 15, flex: 1 }}>Routes Map</div>
@@ -290,7 +305,7 @@ const MapLayout = () => {
         </label>
 
         {/* Basemap */}
-        <button title="Basemap (Light/Dark)" onClick={toggleBasemap} className="h-8 px-2 border rounded hover:bg-gray-200">
+        <button title="Basemap (Light/Dark)"  className="h-8 px-2 border rounded hover:bg-gray-200">
           🗺️
         </button>
 
@@ -333,14 +348,6 @@ const MapLayout = () => {
       />
     </div>
   );
-};
-
-const btnStyle: React.CSSProperties = {
-  border: '1px solid #ddd',
-  borderRadius: 1,
-  padding: '4px 6px',
-  background: '#fff',
-  cursor: 'pointer',
 };
 
 export default MapLayout;

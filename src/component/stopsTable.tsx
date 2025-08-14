@@ -26,6 +26,7 @@ const StopsTable = () => {
       const cols = keys.map((key) => ({
         field: key,
         checkboxSelection: true,
+        filter:true
       }));
       setStopColumn(cols);
     }
@@ -56,7 +57,9 @@ const StopsTable = () => {
   };
 
   return (
-    <div ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+    <div
+    className={`${themeValue==="dark"?"bg-gray-300":"bg-amber-50"}`}
+     ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
       <div
         style={{
           display: 'flex',
@@ -64,7 +67,7 @@ const StopsTable = () => {
           gap: 1,
           padding: '10px 12px',
           borderBottom: '1px solid #e6e6e6',
-          background: '#ffff',
+          // background: '#ffff',
         }}
       >
         <div style={{ color: "green", fontWeight: 700, fontSize: 15, flex: 1 }}><u>Stops</u></div>
@@ -87,7 +90,7 @@ const StopsTable = () => {
           </button>
         </div>
       </div>
-      <div className={`ag-theme-alpine-${themeValue} grid-container`}>
+      <div className={`${themeValue==="dark"?"ag-theme-alpine-dark":"ag-theme-alpine"} grid-container`}>
         <AgGridReact
           theme="legacy"
           rowData={filteredStops}
@@ -98,9 +101,9 @@ const StopsTable = () => {
           quickFilterText={quick}
         />
       </div>
-      <div className="flex flex-row gap-1 p-2" style={{ fontSize: 15,background:"#fff" }}>
+      <div className="flex flex-row gap-1 p-2" style={{ fontSize: 15 }}>
         <h3 className="text-green-600 text-xs font-bold">54 Routes</h3>
-        <h3 className=" text-xs">| 10 Missed Apts Routes</h3>
+        <h3 className=" text-xs">| 10 Missed Apts</h3>
         <h3 className=" text-xs">| 0 New</h3>
         <h3 className=" text-xs">| 0 Arriving Late</h3>
         </div>

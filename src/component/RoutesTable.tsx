@@ -33,6 +33,7 @@ const RouteTable = () => {
             headerName: "Route Name",
             field: "Route",
             editable: true,
+            filter: true
           };
         }
 
@@ -42,6 +43,7 @@ const RouteTable = () => {
             field: "Status",
             editable: true,
             cellEditor: StatusRadioEditor,
+            filter: true
           };
         }
         if (key == "Route Type") {
@@ -50,10 +52,11 @@ const RouteTable = () => {
             field: "Route Type",
             editable: true,
             cellEditor: RouteTypeEditor,
+            filter: true
           }
         }
 
-        return { field: key };
+        return { field: key,filter:true };
       });
 
       // Add checkbox selection on first column
@@ -100,7 +103,9 @@ const RouteTable = () => {
   };
 
   return (
-    <div ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+    <div 
+    className={`${themeValue==="dark"?"bg-gray-300":"bg-amber-50"}`}
+    ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
       <div
         style={{
           display: 'flex',
@@ -108,7 +113,7 @@ const RouteTable = () => {
           gap: 1,
           padding: '10px 12px',
           borderBottom: '1px solid #e6e6e6',
-          background: '#ffff',
+          // background: '#ffff',
         }}
       >
         <div style={{color:"green", fontWeight: 700, fontSize: 15, flex: 1 }}>Routes</div>
@@ -131,7 +136,7 @@ const RouteTable = () => {
         </button>
         </div>
       </div>
-      <div className={`ag-theme-alpine-${themeValue} grid-container`}
+      <div className={`${themeValue==="dark"?"ag-theme-alpine-dark":"ag-theme-alpine"} grid-container`}
         style={{ height: "100%", width: "100%" }}
       >
         <AgGridReact
@@ -146,7 +151,7 @@ const RouteTable = () => {
           quickFilterText={quick}
         />
       </div>
-      <div className="flex flex-row gap-1 p-2" style={{ fontSize: 15,background:"#fff" }}>
+      <div className="flex flex-row gap-1 p-2" style={{ fontSize: 15 }}>
         <h3 className="text-green-600 text-xs font-bold">5 Routes</h3>
         <h3 className=" text-xs">| 2 Missed Apts Routes</h3>
         <h3 className=" text-xs">| 0 New</h3>
