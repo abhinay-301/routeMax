@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -7,14 +7,19 @@ import useMyStore from "../store/route-store";
 import StatusRadioEditor from "./StatusRadioEditor";
 import RouteTypeEditor from "./RouteTypeEditor.tsx";
 import "@salt-ds/ag-grid-theme/salt-ag-theme.css"
+import "../App.css"
 
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
 const RouteTable = () => {
-  const { routes, themeValue,updateTheme, updateSelectedRoutes, updateRouteName, updateRouteInStops } = useMyStore();
+  const { routes, themeValue, updateTheme, updateSelectedRoutes, updateRouteName, updateRouteInStops } = useMyStore();
   const [routeData, setRouteData] = useState([]);
   const [routeColumn, setRouteColumn] = useState([]);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const gridRef = useRef<AgGridReact<any>>(null);
+  const [quick, setQuick] = useState("");
 
   useEffect(() => {
     setRouteData(routes);
@@ -77,23 +82,57 @@ const RouteTable = () => {
     setRouteData((prev) =>
       prev.map((row) => (row === data ? updatedRow : row))
     );
-    
+
   };
   const handleClick = () => {
     console.log("hi");
-    updateTheme(themeValue==="dark" ?"light" :"dark");
-    
+    updateTheme(themeValue === "dark" ? "light" : "dark");
+
   };
+
+  const toggleFullscreen = async () => {
+    const el = wrapperRef.current!;
+    if (!document.fullscreenElement) {
+      await el.requestFullscreen?.();
+    } else {
+      await document.exitFullscreen?.();
+    }
+  };
+
   return (
-    <section>
-      <button onClick={handleClick} className="px-4 py-2 bg-yellow-300 text-white rounded hover:bg-yellow-400">
-        Change Theme
-      </button>
-        <h3 className="text-lg font-semibold mb-2">
-          Routes
-        </h3>
-      <div className={`ag-theme-alpine-${themeValue} h-[300px]`}
-        style={{ height: 500, width: "100%" }}
+    <div ref={wrapperRef} style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+          padding: '10px 12px',
+          borderBottom: '1px solid #e6e6e6',
+          background: '#ffff',
+        }}
+      >
+        <div style={{color:"green", fontWeight: 700, fontSize: 15, flex: 1 }}>Routes</div>
+
+        <div className="flex items-center gap-0">
+          <input
+            title="Filter"
+            value={quick}
+            onChange={(e) => setQuick(e.target.value)}
+            placeholder="    🔍     Search…"
+            className="h-8 px-2  rounded bg-gray-200 mx-3"
+          />
+          <button title="Refresh" className="h-8 px-2 border rounded hover:bg-gray-200">↻</button>
+          <button title="Loading" className="h-8 px-2 border rounded hover:bg-gray-200">⋯</button>
+          <button title="Light/Dark Mode" onClick={handleClick} className="h-8 px-1 border rounded hover:bg-gray-200">
+           👁
+          </button>
+          <button title="Fullscreen" className="h-8 px-2 border rounded hover:bg-gray-200" onClick={toggleFullscreen}>
+          ⛶
+        </button>
+        </div>
+      </div>
+      <div className={`ag-theme-alpine-${themeValue} grid-container`}
+        style={{ height: "100%", width: "100%" }}
       >
         <AgGridReact
           theme="legacy"
@@ -103,9 +142,19 @@ const RouteTable = () => {
           onSelectionChanged={onRouteSelection}
           stopEditingWhenCellsLoseFocus={true}
           onCellValueChanged={onCellValueChanged}
+          ref={gridRef}
+          quickFilterText={quick}
         />
       </div>
-    </section>
+      <div className="flex flex-row gap-1 p-2" style={{ fontSize: 15,background:"#fff" }}>
+        <h3 className="text-green-600 text-xs font-bold">5 Routes</h3>
+        <h3 className=" text-xs">| 2 Missed Apts Routes</h3>
+        <h3 className=" text-xs">| 0 New</h3>
+        <h3 className=" text-xs">| 0 Arriving Late</h3>
+        <h3 className=" text-xs">| 0 Trap Routes</h3>
+        <h3 className=" text-xs">| 5 Open Routes</h3>
+        </div>
+    </div>
   );
 };
 

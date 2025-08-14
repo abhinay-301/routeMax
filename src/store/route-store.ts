@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import routsData from "../data/Download routes.json";
 import stopsData from "../data/Download stops.json";
-import type { MyStore } from "./types";
+import type { MyStore,Route,Stop } from "./types";
 
 const useMyStore = create<MyStore>()(
   persist(
@@ -14,16 +14,16 @@ const useMyStore = create<MyStore>()(
       selectedStops: [],
       themeValue: "light",
 
-      updateSelectedRoutes: (newRoute: []) => {
+      updateSelectedRoutes: (newRoute: Route[]) => {
         set({ selectedRouts: newRoute });
       },
 
-      updateSelectedStops: (newStops: []) => {
+      updateSelectedStops: (newStops: Stop[]) => {
         set({ selectedStops: newStops });
       },
 
-      updateTheme: (newTheme: string) => {
-        set({ theme: newTheme });
+      updateTheme: (newTheme: "light" | "dark") => {
+        set({ themeValue: newTheme });
       },
 
       updateRoutesStatus: (routeName: string, newStatus: string) => {
@@ -76,8 +76,8 @@ const useMyStore = create<MyStore>()(
       // Persist everything(specify only according to need)
       partialize: (state) => ({
         routes: state.routes,
-        selectedRouts: state.selectedRouts,
-        selectedStops: state.selectedStops,
+        // selectedRouts: state.selectedRouts,
+        // selectedStops: state.selectedStops,
         theme: state.theme,
       }),
     }

@@ -1,0 +1,7 @@
+.grid-container {
+  height: 300px; /* normal mode */
+}
+
+:fullscreen .grid-container {
+  height: 100%;
+}
