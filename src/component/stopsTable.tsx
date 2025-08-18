@@ -25,7 +25,7 @@ const StopsTable = () => {
       const keys = Object.keys(stops[0]);
       const cols = keys.map((key) => ({
         field: key,
-        checkboxSelection: true,
+        // checkboxSelection: true,
         filter:true
       }));
       setStopColumn(cols);

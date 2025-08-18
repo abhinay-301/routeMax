@@ -64,9 +64,6 @@ const useMyStore = create<MyStore>()(
           ),
         }));
       },
-      updateTheme: (newTheme:"light"|"dark")=>{
-        set({ themeValue: newTheme });
-      },
       resetRoutes: () => {
         set({ routes: routsData });
       },
